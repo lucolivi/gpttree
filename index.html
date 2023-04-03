@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="static/logo.png">
+    <title>GPTTree</title>
+</head>
+    <style>
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+
+        svg {
+            background-color: #ddd;
+            width: 100%;
+            height: 100%;
+        }
+
+        #nodes-div {
+            position: absolute;
+            left:0px;
+            top:0px;
+        }
+
+        .node-elem {
+            /* display: inline-block; */
+            /* min-width: 30px; */
+            /* height: 30px; */
+            position: absolute;
+            /* background-color: yellow; */
+        } 
+
+        .content-text {
+            resize: none;
+            padding: 10px;
+            font-size: 15px;
+            background-color: #eee;
+            box-shadow: 0px 0px 30px #aaa;
+            border: 0;
+            border-radius: 5px;
+            height: 40px;
+        }
+
+        #nav-div {
+            position: absolute;
+            background-color: #fef3d6;
+            height: 100%;
+            top: 0;
+            width: 250px;
+            text-align: center;
+
+        }
+
+        #preprompt {
+            resize: none;
+            padding: 10px;
+            height:100px;
+        }
+    
+
+    </style>
+
+    </head>
+  <body>
+
+    
+
+    <div id="nodes-div"></div>
+
+    <svg>
+        <g id="link-placeholder"></g>
+    </svg>
+
+    <div id="nav-div">
+        <h2>GPT Tree</h2>
+        <img width="200px" src="static/logo.png"><br>
+        <label for="apikey">OPENAI API KEY:</label><br>
+        <input id="apikey" name="apikey" type="password">
+        <button onclick="testapikey()">Test</button>
+        
+        <br><br>
+        
+        <label for="apikey">Preprompt:</label><br>
+        <textarea id="preprompt">Give me a related prompt to '</textarea>
+
+        <br><br>
+
+        <a target="_blank" href="https://github.com/lucolivi/gpttree">
+            <img width="50px" src="static/github-mark.png">
+        </a>
+
+
+    </div>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85005057-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85005057-1');
+</script>
+
+
+
+
+    <script src="static/jquery-3.6.4.min.js"></script>
+    <script src="static/d3.v7.min.js"></script>
+    <script src="static/openai.js"></script>
+    <script src="static/main.js"></script>
+
+    <script>
+
+
+        function testapikey() {
+
+            getPromptResponse("ping", 1, 0.7, $("#apikey").val())
+                .then(function(resp) {
+                    alert("All good!")
+                })
+                .catch(function(e) {
+                    console.log(e)
+                    alert("ERROR: " + e.responseText)
+                });
+        }
+
+        var nodeCount = 0
+
+        var data = {
+            name:"",
+            children:[]
+        }
+
+        render_graph(data)
+
+        $(".content-text")
+        .attr("disabled", false)
+        .attr("placeholder", "How to design a rocketship?")
+        .focus()
+
+        // d3.select("textarea").style("cursor", "initial")
+  
+
+    </script>
+  </body>
+</html>
