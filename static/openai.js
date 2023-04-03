@@ -1,7 +1,7 @@
 function getRelatedContent(content, n) {
     var promptPromise = new Promise((resolve, reject) => {
         
-        getPromptResponse($("#preprompt").val() + " " + content +"'", n, 0.7, $("#apikey").val())
+        getPromptResponse("'" + content + "'", n, 0.7, $("#apikey").val())
             .then(function(response) {  
                 
                 var respList = []

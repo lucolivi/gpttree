@@ -32,8 +32,10 @@ function triggerNodeCreation(e, d) {
     if(nodeContent.length < 7)
         return
 
+    var nodeType = d.type == "question" ? "answer" : "question"
+
     var newNodeRef = {
-        name: "", children:[], requestPrompt: nodeContent 
+        name: "", children:[], requestPrompt: nodeContent, type: nodeType
     }
         
     d.children.push(newNodeRef)
@@ -117,6 +119,12 @@ function render_graph(data) {
 
             var ngTextArea = ng.append("textarea")
                 .attr("class", "content-text")
+                .style("background-color", function(d) {
+                    if(d.type == "answer")
+                        return "lightgreen"
+                    else
+                        return "white"
+                })
                 .attr("disabled", true)
                 .style("height", _ => this.scrollHeight + "px;overflow-y:hidden;")
                 .on("input", function () {
@@ -141,8 +149,15 @@ function render_graph(data) {
 
                 if(!("requestPrompt" in d))
                     return
+
+                var promptVal = d.requestPrompt
+
+                if(d.type == "question")   
+                    promptVal = $("#preprompt").val() + " " + d.requestPrompt
+                // else
+                //     promptVal = d.requestPrompt
             
-                getRelatedContent(d.requestPrompt, 1)
+                getRelatedContent(promptVal, 1)
                     .then(function(respList) {
 
                         var fillContent = respList[0]
